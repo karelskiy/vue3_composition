@@ -24,7 +24,7 @@ import TelcoLogo from './icons/TelcoLogo.vue'
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .header {
   display: flex;
   align-items: center;
