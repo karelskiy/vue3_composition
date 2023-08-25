@@ -1,4 +1,5 @@
 <template>
+  <MainBanner />
   <div class="cards">
     <q-spinner v-if="!productsArr.length" color="green" size="3em" :thickness="2" />
     <div v-else class="cards-container">
@@ -14,7 +15,6 @@
 
 <script lang="ts">
 export default {
-  components: { StoreItem },
   name: 'MainView'
 }
 </script>
@@ -26,6 +26,7 @@ import { useRouter } from 'vue-router'
 
 import { IStore } from '../models/Store.type'
 import StoreItem from '../components/StoreItem.vue'
+import MainBanner from '../components/MainBanner.vue'
 
 const router = useRouter()
 
