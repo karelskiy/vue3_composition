@@ -1,14 +1,3 @@
-<script lang="ts">
-export default {
-  name: 'MainHeader'
-}
-</script>
-
-<script setup lang="ts">
-import { RouterLink } from 'vue-router'
-import TelcoLogo from './icons/TelcoLogo.vue'
-</script>
-
 <template>
   <div class="header">
     <div class="header-container">
@@ -17,12 +6,28 @@ import TelcoLogo from './icons/TelcoLogo.vue'
           <TelcoLogo />
         </RouterLink>
       </div>
+
+      <SearchInput />
+
       <div class="navigation">
         <RouterLink class="link" to="/articles">Articles</RouterLink>
       </div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'MainHeader'
+}
+</script>
+
+<script setup lang="ts">
+import { RouterLink } from 'vue-router'
+
+import TelcoLogo from './icons/TelcoLogo.vue'
+import SearchInput from './SearchInput.vue'
+</script>
 
 <style scoped lang="scss">
 .header {
@@ -38,6 +43,7 @@ import TelcoLogo from './icons/TelcoLogo.vue'
   max-width: 1280px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 

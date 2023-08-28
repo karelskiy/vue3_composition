@@ -11,10 +11,10 @@
     />
   </div>
   <div class="cards">
-    <q-infinite-scroll @load="infiniteFetch" :offset="250">
+    <q-infinite-scroll @load="infiniteFetch" :offset="250" :disable="!!searchValue">
       <div class="cards-container">
         <StoreItem
-          v-for="product of productsArr"
+          v-for="product of searchValue ? filteredBySearchProducts : productsArr"
           :key="product.id"
           :product="product"
           @click="redirectToStorePage(product.id)"
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onDeactivated, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { ICategory, IStore } from '../models/Store.type'
@@ -44,6 +44,7 @@ import { ProductService } from '../services/ProductService'
 import StoreItem from '../components/StoreItem.vue'
 import MainBanner from '../components/MainBanner.vue'
 import MainFilter from '../components/MainFilter.vue'
+import Emitter, { EmitterEvents } from '../utils/eventEmitter'
 
 const router = useRouter()
 
@@ -72,6 +73,10 @@ const categoriesArr = ref<ICategory[]>([
   }
 ])
 const categoriesLoading = ref(true)
+
+const filteredBySearchProducts = ref<IStore[]>([])
+
+const searchValue = ref('')
 
 const redirectToStorePage = (id: number) => {
   router.push(`/store/${id}`)
@@ -133,8 +138,24 @@ const onFilterClick = async (name: ICategory['name']) => {
   fetchDataForFiltration()
 }
 
+const searchProducts = (value: string) => {
+  // Plain search logic
+  filteredBySearchProducts.value = productsArr.value.filter((i) =>
+    i.title.toLowerCase().includes(value.toLowerCase())
+  )
+}
+
 onMounted(() => {
   fetchCategories()
+
+  Emitter.on(EmitterEvents.SEARCH_STORE, (value: string) => {
+    searchValue.value = value
+    searchProducts(value)
+  })
+})
+
+onDeactivated(() => {
+  Emitter.off(EmitterEvents.SEARCH_STORE)
 })
 </script>
 
