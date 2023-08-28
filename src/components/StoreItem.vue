@@ -95,5 +95,8 @@ defineProps<{
   font-family: Inter;
   font-weight: 500;
   line-height: 125%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

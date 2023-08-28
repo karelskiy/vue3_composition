@@ -1,7 +1,7 @@
 <template>
   <MainBanner />
   <div class="filters">
-    <q-spinner v-if="categoriesLoading" color="green" size="3em" :thickness="2" />
+    <q-spinner-dots v-if="categoriesLoading" color="green" size="40px" />
     <MainFilter
       v-else
       :key="filter.name"
@@ -11,15 +11,21 @@
     />
   </div>
   <div class="cards">
-    <q-spinner v-if="productsLoading" color="green" size="3em" :thickness="2" />
-    <div v-else class="cards-container">
-      <StoreItem
-        v-for="product of productsArr"
-        :key="product.id"
-        :product="product"
-        @click="redirectToStorePage(product.id)"
-      />
-    </div>
+    <q-infinite-scroll @load="infiniteFetch" :offset="250">
+      <div class="cards-container">
+        <StoreItem
+          v-for="product of productsArr"
+          :key="product.id"
+          :product="product"
+          @click="redirectToStorePage(product.id)"
+        />
+      </div>
+      <template v-slot:loading>
+        <div class="row justify-center q-my-md">
+          <q-spinner-dots color="green" size="40px" />
+        </div>
+      </template>
+    </q-infinite-scroll>
   </div>
 </template>
 
@@ -43,6 +49,9 @@ const router = useRouter()
 
 const productsArr = ref<IStore[]>([])
 const productsLoading = ref(true)
+const page = ref(1)
+const limit = 10
+const selectedValue = ref('All Products')
 
 const categoriesArr = ref<ICategory[]>([
   {
@@ -68,11 +77,39 @@ const redirectToStorePage = (id: number) => {
   router.push(`/store/${id}`)
 }
 
+const fetchDataForFiltration = async () => {
+  if (selectedValue.value === 'All Products') {
+    await fetchProducts()
+  } else {
+    await fetchByCategory(selectedValue.value)
+  }
+}
+
+const infiniteFetch = async (index: number, done: () => {}) => {
+  await fetchDataForFiltration()
+  done()
+}
+
 const fetchProducts = async () => {
   productsLoading.value = true
-  const products = await ProductService.getProducts<IStore>()
+  const products = await ProductService.getProducts<IStore>({
+    page: page.value,
+    limit
+  })
 
-  productsArr.value = products.data
+  page.value++
+
+  productsArr.value.push(...products.data)
+  productsLoading.value = false
+}
+
+const fetchByCategory = async (name: string) => {
+  productsLoading.value = true
+  const products = await ProductService.getCategory<IStore[]>(name, { page: page.value, limit })
+
+  page.value++
+
+  productsArr.value.push(...products.data)
   productsLoading.value = false
 }
 
@@ -88,20 +125,15 @@ const fetchCategories = async () => {
 }
 
 const onFilterClick = async (name: ICategory['name']) => {
-  if (name === 'All Products') {
-    fetchProducts()
-    return
-  }
+  selectedValue.value = name
 
-  productsLoading.value = true
-  const products = await ProductService.getCategory<IStore[]>(name)
+  page.value = 1
+  productsArr.value = []
 
-  productsArr.value = products.data
-  productsLoading.value = false
+  fetchDataForFiltration()
 }
 
 onMounted(() => {
-  fetchProducts()
   fetchCategories()
 })
 </script>

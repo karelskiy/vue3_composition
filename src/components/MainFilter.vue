@@ -4,13 +4,13 @@
   </q-chip>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 export default {
   name: 'MainFilter'
 }
 </script>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { defineProps } from 'vue'
 import { ICategory } from '../models/Store.type'
 
@@ -19,5 +19,4 @@ defineProps<{
 }>()
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

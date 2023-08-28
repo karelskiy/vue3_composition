@@ -13,7 +13,12 @@ export class ProductService {
     return axios.get<string[]>('https://fakestoreapi.com/products/categories')
   }
 
-  static async getCategory<T>(name: string /* ICategory['name'] */) {
-    return axios.get<T>(`https://fakestoreapi.com/products/category/${name}`)
+  static async getCategory<T>(
+    name: string /* ICategory['name'] */,
+    params: Record<string, unknown> /* AxiosRequestConfig['params'] */
+  ) {
+    return axios.get<T>(`https://fakestoreapi.com/products/category/${name}`, {
+      params
+    })
   }
 }

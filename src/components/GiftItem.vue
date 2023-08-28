@@ -69,7 +69,9 @@ defineProps<{
       display: flex;
       font-size: 20px;
       font-style: normal;
-      font-family: Source Sans Pro, sans-serif;
+      font-family:
+        Source Sans Pro,
+        sans-serif;
       font-weight: 600;
       line-height: 120%;
       align-content: center;
