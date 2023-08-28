@@ -7,3 +7,9 @@ export interface IStore {
   rating: { rate: number; count: number }
   title: string
 }
+
+export interface ICategory {
+  icon: string
+  color: string
+  name?: string
+}
