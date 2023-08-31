@@ -11,7 +11,13 @@
       <div class="card-percent">{{ product.rating.rate }}%</div>
     </div>
     <div class="card-title-container">
-      <div class="card-title">{{ product.title }}</div>
+      <div class="card-title">
+        <div>{{ product.title }}</div>
+        <div class="card-content">
+          <div class="card-price">$ {{ product.price }}</div>
+          <q-btn color="green" label="Buy" @click="handleBuyClick(product)" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -24,17 +30,28 @@ export default {
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
+
 import { IStore } from '../models/Store.type'
+import { NotifyType, useNotify } from '../hooks/useNotify'
+import { useCartStore } from '../stores/cart'
 defineProps<{
   product: IStore
 }>()
+
+const store = useCartStore()
+const notify = useNotify()
+
+const handleBuyClick = (value: IStore) => {
+  store.addToCart(value)
+  notify(NotifyType.positive, 'Success!')
+}
 </script>
 
 <style scoped lang="scss">
 .card {
   width: 266px;
   cursor: pointer;
-  height: 266px;
+  // height: 266px;
   margin: 8px;
   margin-top: 15px;
   border-radius: 8px;
@@ -81,11 +98,10 @@ defineProps<{
 }
 
 .card-title-container {
-  height: 80px;
   background: #fafafa;
   box-sizing: border-box;
+  padding: 16px;
   padding-top: 44px;
-  padding-left: 16px;
 }
 
 .card-title {
@@ -98,5 +114,12 @@ defineProps<{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
 }
 </style>

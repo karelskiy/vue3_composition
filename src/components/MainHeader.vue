@@ -10,10 +10,13 @@
       <SearchInput />
 
       <div class="navigation">
-        <RouterLink class="link" to="/articles">Articles</RouterLink>
+        <q-btn push color="white" text-color="green" label="Cart" @click="isOpen = true">
+          <q-badge color="orange" floating>{{ store.productsCount }}</q-badge>
+        </q-btn>
       </div>
     </div>
   </div>
+  <CardModal :isOpen="isOpen" @onVisible="(value) => (isOpen = value)" />
 </template>
 
 <script lang="ts">
@@ -23,10 +26,17 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import CardModal from './CardModal.vue'
 
 import TelcoLogo from './icons/TelcoLogo.vue'
 import SearchInput from './SearchInput.vue'
+import { useCartStore } from '../stores/cart'
+
+const isOpen = ref(false)
+
+const store = useCartStore()
 </script>
 
 <style scoped lang="scss">
