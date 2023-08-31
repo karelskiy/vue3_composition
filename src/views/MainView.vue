@@ -37,7 +37,7 @@ export default {
 <script setup lang="ts">
 import { onDeactivated, onMounted, ref } from 'vue'
 
-import { ICategory, IStore } from '../models/Store.type'
+import { type ICategory, type IStore } from '../models/Store.type'
 import { ProductService } from '../services/ProductService'
 import StoreItem from '../components/StoreItem.vue'
 import MainBanner from '../components/MainBanner.vue'
@@ -82,7 +82,7 @@ const fetchDataForFiltration = async () => {
   }
 }
 
-const infiniteFetch = async (index: number, done: () => {}) => {
+const infiniteFetch = async (index: number, done: () => void) => {
   await fetchDataForFiltration()
   done()
 }
@@ -122,7 +122,7 @@ const fetchCategories = async () => {
 }
 
 const onFilterClick = async (name: ICategory['name']) => {
-  selectedValue.value = name
+  selectedValue.value = name!
 
   page.value = 1
   productsArr.value = []
@@ -140,7 +140,8 @@ const searchProducts = (value: string) => {
 onMounted(() => {
   fetchCategories()
 
-  Emitter.on(EmitterEvents.SEARCH_STORE, (value: string) => {
+  Emitter.on(EmitterEvents.SEARCH_STORE, (value: unknown) => {
+    if (typeof value !== 'string') return
     searchValue.value = value
     searchProducts(value)
   })

@@ -31,7 +31,7 @@ export default {
 <script setup lang="ts">
 import { defineProps } from 'vue'
 
-import { IStore } from '../models/Store.type'
+import { type IStore } from '../models/Store.type'
 import { NotifyType, useNotify } from '../hooks/useNotify'
 import { useCartStore } from '../stores/cart'
 defineProps<{

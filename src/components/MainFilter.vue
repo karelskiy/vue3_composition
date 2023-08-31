@@ -12,7 +12,7 @@ export default {
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { ICategory } from '../models/Store.type'
+import { type ICategory } from '../models/Store.type'
 
 defineProps<{
   filter: ICategory

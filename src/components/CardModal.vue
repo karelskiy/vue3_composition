@@ -56,7 +56,7 @@ export default {
 import { defineProps, defineEmits } from 'vue'
 
 import { useCartStore } from '../stores/cart'
-import { IStore } from '../models/Store.type'
+import { type IStore } from '../models/Store.type'
 import { NotifyType, useNotify } from '../hooks/useNotify'
 
 defineProps<{
