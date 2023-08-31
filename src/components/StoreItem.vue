@@ -51,7 +51,6 @@ const handleBuyClick = (value: IStore) => {
 .card {
   width: 266px;
   cursor: pointer;
-  // height: 266px;
   margin: 8px;
   margin-top: 15px;
   border-radius: 8px;

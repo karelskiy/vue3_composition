@@ -28,8 +28,8 @@ export default {
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import CardModal from './CardModal.vue'
 
+import CardModal from './CardModal.vue'
 import TelcoLogo from './icons/TelcoLogo.vue'
 import SearchInput from './SearchInput.vue'
 import { useCartStore } from '../stores/cart'

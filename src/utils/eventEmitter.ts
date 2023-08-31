@@ -1,4 +1,3 @@
-/* eslint-disable */
 import EventEmitter from 'eventemitter3'
 
 export enum EmitterEvents {
