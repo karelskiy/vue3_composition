@@ -1,12 +1,12 @@
 name: github-actions
-run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+run-name: Build by github-actions
 on: 
   push: 
     branches: [ master ]
   pull_request: 
     branches: [ master ]
 jobs:
-  init:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
